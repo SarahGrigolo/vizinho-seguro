@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vizinho Seguro - MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <h1>Vizinho Seguro</h1>
+          <p>Segurança Comunitária</p>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-btn active" onclick="abrirTela('login', this)">Login</button>
+        <button class="nav-btn" onclick="abrirTela('cadastro', this)">Cadastro</button>
+        <button class="nav-btn" onclick="abrirTela('home', this)">Início</button>
+        <button class="nav-btn" onclick="abrirTela('ocorrencia', this)">Nova Ocorrência</button>
+        <button class="nav-btn" onclick="abrirTela('historico', this)">Histórico</button>
+        <button class="nav-btn" onclick="abrirTela('mapa', this)">Mapa</button>
+        <button class="nav-btn" onclick="abrirTela('perfil', this)">Perfil</button>
+        <button class="nav-btn" onclick="abrirTela('validacao', this)">Validação MVP</button>
+      </nav>
+    </aside>
+
+    <main class="content">
+
+      <section id="login" class="screen active-screen">
+        <div class="phone-card login-card">
+          <div class="shield">🛡️</div>
+          <h2>Bem-vindo</h2>
+          <p>Acesse sua conta para acompanhar os alertas da sua região.</p>
+
+          <label>E-mail</label>
+          <input type="email" placeholder="seuemail@exemplo.com" />
+
+          <label>Senha</label>
+          <input type="password" placeholder="Digite sua senha" />
+
+          <button class="primary-btn" onclick="abrirTela('home')">Entrar</button>
+          <button class="link-btn" onclick="abrirTela('cadastro')">Criar nova conta</button>
+        </div>
+      </section>
+
+      <section id="cadastro" class="screen">
+        <div class="phone-card">
+          <h2>Criar Conta</h2>
+          <p>Cadastre-se para receber alertas próximos à sua localização.</p>
+
+          <label>Nome completo</label>
+          <input type="text" placeholder="Digite seu nome" />
+
+          <label>E-mail</label>
+          <input type="email" placeholder="Digite seu e-mail" />
+
+          <label>Bairro</label>
+          <input type="text" placeholder="Informe seu bairro" />
+
+          <label>Senha</label>
+          <input type="password" placeholder="Crie uma senha" />
+
+          <button class="primary-btn" onclick="abrirTela('home')">Cadastrar</button>
+        </div>
+      </section>
+
+      <section id="home" class="screen">
+        <div class="dashboard">
+          <div class="hero">
+            <div>
+              <h2>Olá, morador 👋</h2>
+              <p>Acompanhe os principais alertas de segurança da sua comunidade.</p>
+            </div>
+            <button onclick="abrirTela('ocorrencia')" class="primary-btn small">+ Nova Ocorrência</button>
+          </div>
+
+          <div class="cards-grid">
+            <div class="info-card">
+              <span>🚨</span>
+              <h3>12</h3>
+              <p>Alertas registrados</p>
+            </div>
+            <div class="info-card">
+              <span>📍</span>
+              <h3>4</h3>
+              <p>Ocorrências próximas</p>
+            </div>
+            <div class="info-card">
+              <span>✅</span>
+              <h3>8</h3>
+              <p>Alertas verificados</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Alertas recentes</h3>
+            <div class="alert-item">
+              <strong>Movimento suspeito</strong>
+              <p>Rua Central, próximo ao mercado • 19h30</p>
+            </div>
+            <div class="alert-item">
+              <strong>Furto de bicicleta</strong>
+              <p>Praça do Bairro • 21h10</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ocorrencia" class="screen">
+        <div class="phone-card">
+          <h2>Nova Ocorrência</h2>
+          <p>Registre um alerta para ajudar outros moradores.</p>
+
+          <label>Tipo de ocorrência</label>
+          <select id="tipo">
+            <option value="">Selecione</option>
+            <option>Movimento suspeito</option>
+            <option>Furto</option>
+            <option>Vandalismo</option>
+            <option>Tentativa de invasão</option>
+            <option>Outro</option>
+          </select>
+
+          <label>Local</label>
+          <input id="local" type="text" placeholder="Ex: Rua Central, nº 120" />
+
+          <label>Descrição</label>
+          <textarea id="descricao" placeholder="Descreva brevemente o ocorrido"></textarea>
+
+          <button class="primary-btn" onclick="registrarOcorrencia()">Registrar Ocorrência</button>
+        </div>
+      </section>
+
+      <section id="confirmacao" class="screen">
+        <div class="phone-card success-card">
+          <div class="success-icon">✅</div>
+          <h2>Ocorrência registrada!</h2>
+          <p>O alerta foi compartilhado com moradores próximos.</p>
+
+          <div id="resumoOcorrencia" class="summary"></div>
+
+          <button class="primary-btn" onclick="abrirTela('historico')">Ver Histórico</button>
+          <button class="secondary-btn" onclick="abrirTela('home')">Voltar ao Início</button>
+        </div>
+      </section>
+
+      <section id="historico" class="screen">
+        <div class="dashboard">
+          <div class="hero">
+            <div>
+              <h2>Histórico de Ocorrências</h2>
+              <p>Consulte os alertas registrados na comunidade.</p>
+            </div>
+          </div>
+
+          <div id="listaHistorico" class="panel">
+            <h3>Ocorrências</h3>
+            <div class="alert-item">
+              <strong>Movimento suspeito</strong>
+              <p>Rua Central • Hoje às 19h30</p>
+            </div>
+            <div class="alert-item">
+              <strong>Furto</strong>
+              <p>Praça do Bairro • Ontem às 21h10</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="mapa" class="screen">
+        <div class="dashboard">
+          <div class="hero">
+            <div>
+              <h2>Mapa de Alertas</h2>
+              <p>Visualização simulada das ocorrências próximas.</p>
+            </div>
+          </div>
+
+          <div class="map-card">
+            <div class="pin pin1">🚨</div>
+            <div class="pin pin2">👀</div>
+            <div class="pin pin3">⚠️</div>
+            <p class="street street1">Rua Central</p>
+            <p class="street street2">Av. Principal</p>
+            <p class="street street3">Praça do Bairro</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="perfil" class="screen">
+        <div class="phone-card">
+          <div class="avatar">👤</div>
+          <h2>Perfil do Usuário</h2>
+
+          <div class="profile-row">
+            <strong>Nome:</strong>
+            <span>Morador Exemplo</span>
+          </div>
+          <div class="profile-row">
+            <strong>Bairro:</strong>
+            <span>Centro</span>
+          </div>
+          <div class="profile-row">
+            <strong>Status:</strong>
+            <span>Ativo</span>
+          </div>
+
+          <button class="secondary-btn" onclick="abrirTela('login')">Sair</button>
+        </div>
+      </section>
+
+      <section id="validacao" class="screen">
+        <div class="dashboard">
+          <div class="hero">
+            <div>
+              <h2>Validação do MVP</h2>
+              <p>Testes realizados com usuários reais para avaliar a proposta.</p>
+            </div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="info-card">
+              <span>👥</span>
+              <h3>5</h3>
+              <p>Usuários testados</p>
+            </div>
+            <div class="info-card">
+              <span>⭐</span>
+              <h3>Boa</h3>
+              <p>Aceitação geral</p>
+            </div>
+            <div class="info-card">
+              <span>💡</span>
+              <h3>5</h3>
+              <p>Sugestões coletadas</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Feedback dos Usuários</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Usuário</th>
+                  <th>Avaliação</th>
+                  <th>Sugestão</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Usuário 1</td>
+                  <td>Excelente</td>
+                  <td>Anexar vídeos</td>
+                </tr>
+                <tr>
+                  <td>Usuário 2</td>
+                  <td>Muito boa</td>
+                  <td>Filtros no mapa</td>
+                </tr>
+                <tr>
+                  <td>Usuário 3</td>
+                  <td>Muito boa</td>
+                  <td>Notificações sonoras</td>
+                </tr>
+                <tr>
+                  <td>Usuário 4</td>
+                  <td>Excelente</td>
+                  <td>Comentários</td>
+                </tr>
+                <tr>
+                  <td>Usuário 5</td>
+                  <td>Muito boa</td>
+                  <td>Integração com câmeras</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
